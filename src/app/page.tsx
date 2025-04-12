@@ -33,8 +33,11 @@ export default function Home() {
 
       <footer className="mt-12 pt-4 border-t border-gray-700 text-center text-xs opacity-50">
         <p>&copy; 2025 hashslash.</p>
-        <p class="mt-1">// вы находитесь в режиме ЭЛТ, переключиться в режим ЖК?</p>
+        <p className="mt-1">// вы находитесь в режиме ЭЛТ, переключиться в режим ЖК?</p>
       </footer>
     </div>
   );
 }
+
+
+    
