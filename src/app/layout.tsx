@@ -18,7 +18,7 @@ const pressStart2P = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: 'VibeCoding AI',
+  title: 'hashslash',
   description: 'Courses in AI and Creative Coding',
 };
 
@@ -35,3 +35,4 @@ export default function RootLayout({
     </html>
   );
 }
+
