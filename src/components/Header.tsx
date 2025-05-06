@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -6,7 +7,9 @@ export default function Header() {
       <div className="flex justify-between items-center max-w-6xl mx-auto">
         <div className="text-xl font-mono">
           <span className="mr-1">#</span>
-          <span>хешслеш</span>
+          <Link href="/" className="hover:underline focus:underline outline-none">
+            <span>хешслеш</span>
+          </Link>
         </div>
         <nav className="hidden md:flex items-center space-x-6">
           <a href="#courses" className="transition-all">Курсы</a>
