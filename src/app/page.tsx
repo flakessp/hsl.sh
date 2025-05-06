@@ -139,7 +139,7 @@ export default function Home() {
           <div className="border border-gray-200 p-6">
             <h3 className="font-bold">Telegram</h3>
             <p className="my-4 text-gray-600">Присоединяйтесь к нашему сообществу в Telegram. Обсуждайте курсы, делитесь опытом, находите единомышленников.</p>
-            <a href="https://t.me/hashslash_community" className="text-gray-700 hover:text-black">Вступить в чат →</a>
+            <a href="https://t.me/hashslash_chat" className="text-gray-700 hover:text-black">Вступить в чат →</a>
           </div>
             
           <div className="border border-gray-200 p-6">
@@ -157,7 +157,7 @@ export default function Home() {
           <p className="text-lg mb-8 text-gray-600">Присоединяйтесь к нашему сообществу прямо сейчас и начните создавать потрясающие проекты с помощью ИИ.</p>
             
           <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
-            <a href="https://t.me/hashslash_community" className="border border-gray-200 px-8 py-4 text-center hover:bg-gray-50 transition-all">
+            <a href="https://t.me/hashslash_chat" className="border border-gray-200 px-8 py-4 text-center hover:bg-gray-50 transition-all">
               Telegram-чат
             </a>
               
@@ -187,7 +187,7 @@ export default function Home() {
           <div>
             <h3 className="font-bold mb-4">Контакты</h3>
             <ul className="space-y-2">
-              <li><a href="https://t.me/hashslash_community" className="text-gray-600 hover:text-black">Telegram</a></li>
+              <li><a href="https://t.me/hashslash_chat" className="text-gray-600 hover:text-black">Telegram</a></li>
               <li><a href="mailto:hello@hsl.sh" className="text-gray-600 hover:text-black">hello@hsl.sh</a></li>
             </ul>
           </div>

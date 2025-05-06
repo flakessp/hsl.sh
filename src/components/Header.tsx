@@ -16,7 +16,7 @@ export default function Header() {
           <a href="#community" className="transition-all">Сообщество</a>
           <a href="#about" className="transition-all">О проекте</a>
         </nav>
-        <a href="https://t.me/hashslash_community" className="border border-gray-200 px-4 py-1 transition-all hover:bg-gray-50">
+        <a href="https://t.me/hashslash_chat" className="border border-gray-200 px-4 py-1 transition-all hover:bg-gray-50">
           Вступить в чат
         </a>
       </div>

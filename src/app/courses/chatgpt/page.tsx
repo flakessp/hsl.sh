@@ -4,59 +4,57 @@ import React from 'react';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import Section from '../../../components/Section';
+import coursesData from '../../../data/coursesData.json'; // Import the JSON data
 
 const ChatGptCoursePage = () => {
+  const courseContent = coursesData.chatgpt; // Access the ChatGPT course content
+
   return (
     <div className="min-h-screen">
       <Header />
       <main className="pt-20 max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h1 className="text-3xl md:text-4xl font-mono mb-6">
-            ChatGPT: основы работы
+            {courseContent.hero.title}
           </h1>
           <p className="text-lg max-w-3xl mx-auto mb-12 text-gray-600">
-            Освойте самый популярный AI-ассистент для решения повседневных и рабочих задач.
+            {courseContent.hero.subtitle}
           </p>
         </div>
 
-        <Section title="О курсе">
+        <Section title={courseContent.about.title}>
           <div className="border border-gray-200 p-6">
-            <p className="mb-4 text-gray-600">
-              Этот курс предназначен для тех, кто хочет быстро и эффективно научиться использовать ChatGPT. Вы узнаете, как правильно формулировать запросы, получать нужную информацию, генерировать текст, код и многое другое.
-            </p>
-            <p className="mb-4 text-gray-600">
-              Мы разберем практические кейсы применения ChatGPT в работе, учебе и личной жизни. По окончании курса вы сможете уверенно использовать ChatGPT для повышения своей продуктивности.
-            </p>
+            {courseContent.about.description.map((paragraph, index) => (
+              <p key={index} className="mb-4 text-gray-600" dangerouslySetInnerHTML={{ __html: paragraph }} />
+            ))}
             <div className="text-xs text-gray-500 mt-4">
-              <div>Продолжительность: 1 неделя</div>
-              <div>Формат: Видеоуроки, практические упражнения, доступ к базе знаний</div>
-              <div>Стоимость: 35$</div>
+              <div>Продолжительность: {courseContent.about.details.duration}</div>
+              <div>Формат: {courseContent.about.details.format}</div>
+              <div>Стоимость: {courseContent.about.details.price}</div>
             </div>
           </div>
         </Section>
-        <Section title="Программа и темы">
+        <Section title={courseContent.program.title}>
           <div className="border border-gray-200 p-6">
             <ul className="list-disc list-inside text-gray-600">
-              <li>Знакомство с ChatGPT: интерфейс и базовые возможности.</li>
-              <li>Искусство промптинга: как задавать вопросы, чтобы получать точные ответы.</li>
-              <li>Генерация текста: статьи, письма, посты для соцсетей.</li>
-              <li>ChatGPT для программистов: генерация и отладка кода, объяснение алгоритмов.</li>
-              <li>Использование ChatGPT для обучения и исследований.</li>
-              <li>Креативное применение: идеи, сценарии, стихи.</li>
-              <li>Ограничения и этические аспекты использования AI.</li>
+              {courseContent.program.items.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
         </Section>
 
-        <Section title="Готовы стать мастером ChatGPT?">
+        <Section title={courseContent.cta.title}>
           <div className="text-center">
-            <a href="#" className="border border-gray-200 px-8 py-4 rounded hover:bg-gray-50 transition-colors text-lg font-semibold">
-              Записаться на курс «ChatGPT: основы работы»
+            <a href={courseContent.cta.link} className="border border-gray-200 px-8 py-4 rounded hover:bg-gray-50 transition-colors text-lg font-semibold">
+              {courseContent.cta.buttonText}
             </a>
           </div>
         </Section>
         <div className="text-center my-12">
-          <a href="/" className="text-gray-700 hover:text-black">&lt;&lt; Вернуться на главную</a>
+          <a href={courseContent.backLink.link} className="text-gray-700 hover:text-black">
+            {courseContent.backLink.text}
+          </a>
         </div>
       </main>
       <Footer />
