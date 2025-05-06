@@ -1,4 +1,3 @@
-
 import type {Metadata} from 'next';
 import {IBM_Plex_Mono, Press_Start_2P} from 'next/font/google';
 import './globals.css';
@@ -22,10 +21,13 @@ export const metadata: Metadata = {
   description: 'Learn AI and creative coding with hashslash. Explore our courses and workshops designed for beginners and advanced learners.',
   keywords: ['AI', 'creative coding', 'courses', 'workshops', 'hashslash', 'hsl.sh', 'artificial intelligence', 'programming', 'education'],
   authors: [{ name: 'hashslash' }],
+  colorScheme: 'dark',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#000000' }
+  ],
   viewport: {
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
   },
   openGraph: {
     title: 'hashslash - AI and Creative Coding Courses',
@@ -80,4 +82,3 @@ export default function RootLayout({
     </html>
   );
 }
-
