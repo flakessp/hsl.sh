@@ -103,7 +103,7 @@ const VibeCodingPage = () => {
         <Section title={courseContent.cta.title}>
           <div className="text-center">
             <p className="mb-6 text-gray-600">{courseContent.cta.subtitle}</p>
-            <a href={courseContent.cta.link} className="border border-gray-200 px-8 py-4 rounded hover:bg-gray-50 transition-colors text-lg font-semibold">
+            <a href={courseContent.cta.link} className="crt-border px-8 py-4 hover:crt-text-glow transition-colors text-lg font-semibold">
               {courseContent.cta.buttonText}
             </a>
           </div>

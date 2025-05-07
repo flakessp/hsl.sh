@@ -77,6 +77,43 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            // Немедленное создание и установка фавиконки при загрузке
+            const globes = ['🌍', '🌎', '🌏'];
+            let currentIndex = 0;
+
+            function updateFavicon() {
+              const emoji = globes[currentIndex];
+              const canvas = document.createElement('canvas');
+              canvas.width = 32;
+              canvas.height = 32;
+              const ctx = canvas.getContext('2d');
+              ctx.font = '28px serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(emoji, 16, 16);
+              
+              let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+              link.type = 'image/x-icon';
+              link.rel = 'shortcut icon';
+              link.href = canvas.toDataURL();
+              document.getElementsByTagName('head')[0].appendChild(link);
+              
+              currentIndex = (currentIndex + 1) % globes.length;
+            }
+
+            // Первичная установка фавиконки
+            updateFavicon();
+            
+            // Запуск анимации после загрузки документа
+            document.addEventListener('DOMContentLoaded', function() {
+              setInterval(updateFavicon, 1000);
+            });
+          })();
+        ` }} />
+      </head>
       <body className={`${ibmPlexMono.variable} ${pressStart2P.variable} font-mono bg-background text-foreground p-4 md:p-8`}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
           \"@context\": \"https://schema.org\",
