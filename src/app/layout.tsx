@@ -86,6 +86,49 @@ export default function RootLayout({
           \"logo\": \"https://hsl.sh/logo.png\",
           \"sameAs\": [\"https://t.me/hashslash\", \"https://twitter.com/hashslash\"]
         }` }} />
+        <script dangerouslySetInnerHTML={{__html: `
+(() => {
+  const emojis = ["🌍", "🌎", "🌏"];
+  let currentEmojiIndex = 0;
+  const intervalStorageKey = '__animatedGlobeFaviconInterval';
+
+  const renderFavicon = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 64;
+    canvas.height = 64;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    context.font = "56px serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    // Adjust y for better vertical centering of emojis, a little trial and error might be needed for perfect alignment
+    context.fillText(emojis[currentEmojiIndex], canvas.width / 2, canvas.height / 2 + 4);
+
+    let link = document.querySelector('link[rel="icon"]');
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    link.type = "image/png";
+    link.href = canvas.toDataURL();
+  };
+
+  const tick = () => {
+    currentEmojiIndex = (currentEmojiIndex + 1) % emojis.length;
+    renderFavicon();
+  };
+
+  if (window[intervalStorageKey]) {
+    clearInterval(window[intervalStorageKey]);
+  }
+
+  renderFavicon(); // Set initial favicon
+  window[intervalStorageKey] = setInterval(tick, 1000);
+})();
+        `}} />
         {children}
       </body>
     </html>

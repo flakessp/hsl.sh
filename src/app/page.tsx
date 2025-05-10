@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 import Section from '../components/Section';
 import CourseCard from '../components/CourseCard';
 
@@ -37,23 +36,7 @@ export default function Home() {
           </div>
         </div>
       
-      <Section id="courses" title="Наши курсы">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <CourseCard
-            title="Вайб-кодинг: от идеи до запуска"
-            description="4 недели, 20 уроков"
-            details={["Онлайн-трансляции, практические задания и поддержка кураторов", "Генерация кода и запуск MVP с помощью AI", "Стоимость: от 70$ (базовый), 190$ (PRO)"]}
-            href="/courses/vibe-coding"
-          />
-          <CourseCard
-            title="ChatGPT: основы работы"
-            description="1 неделя, 5 уроков"
-            details={["Эффективные промты, практическое применение GPT", "Видеоуроки и удобные чек-листы", "Стоимость: 35$"]}
-            href="/courses/chatgpt"
-          />
-        </div>
-      </Section>
-      
+
       <Section id="about" title="О проекте" className="pt-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="border border-gray-200 p-6">
@@ -71,65 +54,7 @@ export default function Home() {
         </div>
       </Section>
       
-      {/* Testimonials Section */}
-      <section className="my-16">
-        <h2 className="crt-text-glow mb-8">$ grep feedback ./user-reviews</h2>
-          
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="crt-border">
-            <p className="mb-4">«Научился создавать прототипы за часы вместо дней. AI полностью изменил мой подход к разработке»</p>
-            <p>— Алексей К.</p>
-          </div>
-              
-          <div className="crt-border">
-            <p className="mb-4">«Наконец-то смогла перевести свои дизайн-идеи в рабочий код без посредников. Это магия!»</p>
-            <p>— Мария Д.</p>
-          </div>
-              
-          <div className="crt-border">
-            <p className="mb-4">«Запустил MVP менее чем за неделю. Сообщество и поддержка неоценимы»</p>
-            <p>— Павел М.</p>
-          </div>
-        </div>
-            
-        <div className="mt-12 crt-border p-6">
-          <pre className="crt-text-glow text-xs">
-{`Статистика:
-- Студентов: 1 000+
-- Завершаемость курсов: 80%
-- Рейтинг: 4.9/5`}
-          </pre>
-        </div>
-      </section>
       
-      {/* Blog Section */}
-      <section id="blog" className="my-16">
-        <h2 className="crt-text-glow mb-8">$ ls ./resources</h2>
-          
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="crt-border">
-            <h3 className="crt-text-glow">Основы промт-инжиниринга</h3>
-            <p className="my-4">Как эффективно общаться с AI, чтобы получить качественный рабочий код</p>
-            <a href="/blog/prompt-engineering" className="crt-text-glow">» Читать статью</a>
-          </div>
-            
-          <div className="crt-border">
-            <h3 className="crt-text-glow">5 инструментов для AI в 2025</h3>
-            <p className="my-4">Обзор самых полезных помощников для генеративного кодинга</p>
-            <a href="/blog/ai-dev-tools" className="crt-text-glow">» Читать статью</a>
-          </div>
-            
-          <div className="crt-border">
-            <h3 className="crt-text-glow">От идеи до MVP за 48 часов</h3>
-            <p className="my-4">Реальный кейс создания проекта с нуля при помощи AI</p>
-            <a href="/blog/mvp-48-hours" className="crt-text-glow">» Читать статью</a>
-          </div>
-        </div>
-          
-        <div className="text-center mt-8">
-          <a href="/blog" className="crt-text-glow">» Все статьи</a>
-        </div>
-      </section>
       
       {/* Newsletter Section */}
       <section id="community" className="my-16 pt-8">
@@ -194,7 +119,7 @@ export default function Home() {
         </div>
           
         <div className="mt-8 pt-8 border-t border-gray-200 text-sm text-gray-500 text-center">
-          &copy; 2023-2024 HashSlash. Все права защищены.
+          &copy; 2025 HashSlash
         </div>
       </footer>
     </main>
