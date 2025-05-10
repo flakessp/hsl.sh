@@ -9,6 +9,9 @@ body {
 
 @layer base {
   :root {
+    --accent: #ff6b00;
+    --accent-hover: #ff8330;
+    --card-border: #e4e7ec;
     --background: 0 0% 100%;
     --foreground: 0 0% 0%;
     --card: 0 0% 100%;
@@ -58,6 +61,51 @@ body {
   * {
     @apply border-border;
   }
+}
+
+/* --- CTA‑КНОПКА --- */
+.cta-btn {
+  display: inline-block;
+  padding: 0.9rem 1.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.cta-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.45);
+}
+.cta-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(255, 107, 0, 0.25);
+}
+
+.course-card {
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .08);
+}
+
+.course-card a {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.course-card a:hover {
+  text-decoration: underline;
+}
 
   body {
     @apply bg-white text-black antialiased p-4 md:p-8;
@@ -107,6 +155,50 @@ body {
   ul li {
     @apply text-gray-600 my-1;
   }
+
+/* --- CTA‑КНОПКА, КАРТОЧКА и акцентные ссылки --- */
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.9rem 1.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.cta-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.45);
+}
+.cta-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(255, 107, 0, 0.25);
+}
+
+.course-card {
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .08);
+}
+
+.course-card a {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.course-card a:hover {
+  text-decoration: underline;
 }
 
 /* Remove all border-radius */
