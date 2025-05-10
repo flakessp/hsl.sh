@@ -19,38 +19,31 @@ export default function Home() {
             Школа цифровых ремёсел для дизайнеров, предпринимателей и начинающих разработчиков, которые хотят запускать проекты с помощью AI-инструментов
           </p>
         </div>
-        <div className="mb-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
-            <CourseCard
-              title="Вайб-кодинг: от идеи до запуска"
-              description="4 недели практических занятий"
-              details={[]}
-              href="/courses/vibe-coding"
-            />
-            <CourseCard
-              title="ChatGPT: основы работы"
-              description="Быстрый старт для начинающих"
-              details={[]}
-              href="/courses/chatgpt"
-            />
+        <section className="mb-20">
+          <h2 className="mb-8 text-xl font-bold">Ближайшие программы</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="border border-gray-200 p-6">
+              <h3 className="font-bold">Вайб-кодинг: от идеи до MVP</h3>
+              <p className="my-4 text-gray-600">4 недели • 14 live-сессий • поддержка менторов</p>
+              <p className="my-2 text-gray-600">– Генерируем код с LLM</p>
+              <p className="my-2 text-gray-600">– Старт 14 мая</p>
+              <a href="/courses/vibe-coding" className="text-gray-700 hover:text-black">Узнать программу →</a>
+            </div>
+            <div className="border border-gray-200 p-6">
+              <h3 className="font-bold">ChatGPT для новичков</h3>
+              <p className="my-4 text-gray-600">1 неделя • 6 занятий • практика промтов</p>
+              <a href="/courses/chatgpt" className="text-gray-700 hover:text-black">Смотреть детали →</a>
+            </div>
           </div>
-        </div>
+        </section>
       
 
-      <Section id="about" title="О проекте" className="pt-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="border border-gray-200 p-6">
-            <h3 className="font-bold">Практическая направленность</h3>
-            <p className="my-4 text-gray-600">Только реальные задачи и полезные проекты. Без теории ради теории. Запускайте MVP в реальных условиях.</p>
-          </div>
-          <div className="border border-gray-200 p-6">
-            <h3 className="font-bold">Активное сообщество</h3>
-            <p className="my-4 text-gray-600">Telegram-чат, живое общение и помощь в реальном времени. Вместе мы сильнее.</p>
-          </div>
-          <div className="border border-gray-200 p-6">
-            <h3 className="font-bold">Открытость знаний</h3>
-            <p className="my-4 text-gray-600">Бесплатные материалы и открытые ресурсы на GitHub. Делимся знаниями и опытом со всеми.</p>
-          </div>
+      <Section id="about" title="Почему вам зайдёт HashSlash" className="pt-8">
+        <div className="space-y-4">
+          <p className="text-gray-700">• <strong>Практика, а не теория.</strong> 80 % времени — код и тесты, 20 % — разбор ошибок.</p>
+          <p className="text-gray-700">• <strong>MVP за недели.</strong> Методика вайб-кодинга позволяет собрать прототип уже на 1-й неделе.</p>
+          <p className="text-gray-700">• <strong>Менторы онлайн 24/7.</strong> Ответы в чате в среднем за 15 минут.</p>
+          <p className="text-gray-700">• <strong>Комьюнити на долгосрок.</strong></p>
         </div>
       </Section>
       
@@ -75,23 +68,7 @@ export default function Home() {
         </div>
       </section>
       
-      <section className="my-16 pt-8">
-        <h2 className="mb-8 text-xl font-bold">Присоединяйтесь к нам</h2>
-          
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-lg mb-8 text-gray-600">Присоединяйтесь к нашему сообществу прямо сейчас и начните создавать потрясающие проекты с помощью ИИ.</p>
-            
-          <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
-            <a href="https://t.me/hashslash_chat" className="border border-gray-200 px-8 py-4 text-center hover:bg-gray-50 transition-all">
-              Telegram-чат
-            </a>
-              
-            <a href="/courses/vibe-coding" className="border border-gray-200 px-8 py-4 text-center hover:bg-gray-50 transition-all">
-              Записаться на курс
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* Link block removed */}
       
       <footer className="pt-8 pb-16 border-t border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
