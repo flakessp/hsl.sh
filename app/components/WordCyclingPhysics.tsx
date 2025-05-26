@@ -44,6 +44,7 @@ export default function WordCyclingPhysics() {
   const animationFrameRef = useRef<number | null>(null);
   const selectedBodyRef = useRef<Matter.Body | null>(null);
   const mousePositionsRef = useRef<{ x: number; y: number; time: number }[]>([]);
+  const currentWordsRef = useRef<{ text: string; fontClass: string }[]>([]);
   
   // Generate random fonts for each word in the current pair
   const randomFonts = useMemo(() => {
@@ -63,7 +64,7 @@ export default function WordCyclingPhysics() {
   const andRef = useRef<HTMLSpanElement>(null);
   const word2Ref = useRef<HTMLSpanElement>(null);
 
-  const dropWord = (text: string, originalElement: HTMLElement | null) => {
+  const dropWord = (text: string, originalElement: HTMLElement | null, fontClass: string) => {
     if (!sceneRef.current || !engineRef.current || !originalElement) return;
 
     const rect = originalElement.getBoundingClientRect();
@@ -72,8 +73,7 @@ export default function WordCyclingPhysics() {
 
     const wordDiv = document.createElement('div');
     wordDiv.textContent = text;
-    const randomFont = getRandomFont();
-    wordDiv.className = `falling-text absolute text-xl md:text-3xl text-white p-1 select-none whitespace-nowrap will-change-transform ${randomFont}`;
+    wordDiv.className = `falling-text absolute text-xl md:text-3xl text-white p-1 select-none whitespace-nowrap will-change-transform ${fontClass}`;
     sceneRef.current.appendChild(wordDiv);
 
     const wordWidth = wordDiv.offsetWidth;
@@ -202,19 +202,50 @@ export default function WordCyclingPhysics() {
         x: window.innerWidth / 2,
         y: window.innerHeight + 50
       });
-      Matter.Body.setVertices(ground, [
-        { x: -window.innerWidth, y: -50 },
-        { x: window.innerWidth * 2, y: -50 },
-        { x: window.innerWidth * 2, y: 50 },
-        { x: -window.innerWidth, y: 50 }
-      ]);
+      const newGround = Matter.Bodies.rectangle(
+        window.innerWidth / 2,
+        window.innerHeight + 50,
+        window.innerWidth * 2,
+        100,
+        { isStatic: true }
+      );
+      Matter.Body.setVertices(ground, newGround.vertices);
     };
 
     window.addEventListener('resize', handleResize);
 
     const intervalId = setInterval(() => {
+      // Capture data of words currently on screen before they change
+      const wordsToFall: { text: string; rect: DOMRect; fontClass: string }[] = [];
+      
+      if (word1Ref.current && currentWordsRef.current[0]) {
+        wordsToFall.push({
+          text: currentWordsRef.current[0].text,
+          rect: word1Ref.current.getBoundingClientRect(),
+          fontClass: currentWordsRef.current[0].fontClass
+        });
+      }
+      
+      if (word2Ref.current && currentWordsRef.current[1]) {
+        wordsToFall.push({
+          text: currentWordsRef.current[1].text,
+          rect: word2Ref.current.getBoundingClientRect(),
+          fontClass: currentWordsRef.current[1].fontClass
+        });
+      }
+      
+      // Make current words fall immediately
+      wordsToFall.forEach(wordData => {
+        // Create a temporary element to hold the position data
+        const tempElement = {
+          getBoundingClientRect: () => wordData.rect
+        } as HTMLElement;
+        dropWord(wordData.text, tempElement, wordData.fontClass);
+      });
+      
+      // Now update the index to show new words
       setCurrentIndex((prev) => (prev + 1) % wordPairs.length);
-    }, 6000); // Increased from 4000ms to 6000ms
+    }, 6000);
 
     return () => {
       clearInterval(intervalId);
@@ -249,25 +280,26 @@ export default function WordCyclingPhysics() {
     }
   }, []);
 
+  // Update current words reference when index or fonts change
   useEffect(() => {
-    // Wait longer before dropping words to prevent overlap
-    const timer = setTimeout(() => {
-      if (word1Ref.current) dropWord(wordPairs[(currentIndex - 1 + wordPairs.length) % wordPairs.length][0], word1Ref.current);
-      // "и" doesn't fall, it just disappears
-      if (word2Ref.current) dropWord(wordPairs[(currentIndex - 1 + wordPairs.length) % wordPairs.length][1], word2Ref.current);
-    }, 100); // Reduced from 300ms to drop sooner after transition starts
-
-    return () => clearTimeout(timer);
-  }, [currentIndex]);
+    currentWordsRef.current = [
+      { text: wordPairs[currentIndex][0], fontClass: randomFonts.word1 },
+      { text: wordPairs[currentIndex][1], fontClass: randomFonts.word2 }
+    ];
+  }, [currentIndex, randomFonts]);
 
   const wordAnimationVariants = {
     initial: { opacity: 0, scale: 0.9 },
     animate: (delay: number) => ({
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, delay: delay + 0.5 } // Added delay to prevent overlap
+      transition: { duration: 0.5, delay: delay }
     }),
-    exit: { opacity: 1, transition: { duration: 0 } } // Words stay visible when exiting
+    exit: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { duration: 0 } // No visual exit - words just fall
+    }
   };
   
   const andAnimationVariants = {
@@ -275,9 +307,13 @@ export default function WordCyclingPhysics() {
     animate: (delay: number) => ({
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, delay: delay + 0.5 } // Added delay to sync with words
+      transition: { duration: 0.5, delay: delay }
     }),
-    exit: { opacity: 0, transition: { duration: 0.3 } } // "и" fades out
+    exit: { 
+      opacity: 0,
+      scale: 0.8, 
+      transition: { duration: 0.3 } 
+    }
   };
 
   return (
