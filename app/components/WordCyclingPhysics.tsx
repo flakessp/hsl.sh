@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Matter from 'matter-js';
+import dynamic from 'next/dynamic';
 
 const wordPairs = [
   ["Сайты", "Продукты"],
@@ -26,8 +27,10 @@ const fontClasses = [
   'font-cormorant-garamond'
 ];
 
-const getRandomFont = () => {
-  return fontClasses[Math.floor(Math.random() * fontClasses.length)];
+// Deterministic font selection based on index and word position
+const getFont = (index: number, position: number) => {
+  const combinedIndex = (index * 2 + position) % fontClasses.length;
+  return fontClasses[combinedIndex];
 };
 
 interface FallingWord {
@@ -35,7 +38,7 @@ interface FallingWord {
   physicsBody: Matter.Body;
 }
 
-export default function WordCyclingPhysics() {
+function WordCyclingPhysics() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sceneRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Matter.Engine | null>(null);
@@ -46,14 +49,10 @@ export default function WordCyclingPhysics() {
   const mousePositionsRef = useRef<{ x: number; y: number; time: number }[]>([]);
   const currentWordsRef = useRef<{ text: string; fontClass: string }[]>([]);
   
-  // Generate random fonts for each word in the current pair
+  // Generate deterministic fonts for each word based on current index
   const randomFonts = useMemo(() => {
-    const font1 = getRandomFont();
-    let font2 = getRandomFont();
-    // Ensure the fonts are different
-    while (font2 === font1) {
-      font2 = getRandomFont();
-    }
+    const font1 = getFont(currentIndex, 0);
+    const font2 = getFont(currentIndex, 1);
     return {
       word1: font1,
       word2: font2
@@ -178,8 +177,9 @@ export default function WordCyclingPhysics() {
     }
   };
 
+
   useEffect(() => {
-    const engine = Matter.Engine.create({ gravity: { y: 0.7 } });
+    const engine = Matter.Engine.create({ gravity: { y: 1.5 } });
     engineRef.current = engine;
 
     const ground = Matter.Bodies.rectangle(
@@ -245,7 +245,7 @@ export default function WordCyclingPhysics() {
       
       // Now update the index to show new words
       setCurrentIndex((prev) => (prev + 1) % wordPairs.length);
-    }, 6000);
+    }, 3000);
 
     return () => {
       clearInterval(intervalId);
@@ -326,7 +326,7 @@ export default function WordCyclingPhysics() {
       </div>
       
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen pointer-events-none">
-        <div className="text-3xl md:text-5xl mb-4 font-anonymous-pro">Мы делаем</div>
+        <div className="text-3xl md:text-5xl mb-4 font-anonymous-pro">Мы делаем:</div>
         
         <div className="flex items-center">
           <AnimatePresence mode="wait">
@@ -378,3 +378,8 @@ export default function WordCyclingPhysics() {
     </>
   );
 }
+
+// Export as dynamic component with SSR disabled to avoid hydration issues
+export default dynamic(() => Promise.resolve(WordCyclingPhysics), {
+  ssr: false
+});
