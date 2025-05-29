@@ -89,7 +89,7 @@ function WordCyclingPhysics() {
 
     const wordDiv = document.createElement('div');
     wordDiv.textContent = text;
-    wordDiv.className = `falling-text absolute text-xl md:text-3xl text-white p-1 select-none whitespace-nowrap will-change-transform ${fontClass}`;
+    wordDiv.className = `falling-text absolute text-lg md:text-2xl lg:text-3xl text-white p-1 select-none whitespace-nowrap will-change-transform ${fontClass}`;
     sceneRef.current.appendChild(wordDiv);
 
     const wordWidth = wordDiv.offsetWidth;
@@ -408,22 +408,22 @@ function WordCyclingPhysics() {
       <div ref={sceneRef} className="scene absolute inset-0 cursor-pointer z-10" />
       
       {/* Logo in upper left corner */}
-      <div className="absolute top-8 left-8 z-30 text-2xl md:text-3xl font-anonymous-pro font-bold text-white">
+      <div className="absolute top-4 left-4 md:top-8 md:left-8 z-30 text-xl md:text-2xl lg:text-3xl font-anonymous-pro font-bold text-white">
         хсл щ
       </div>
       
       {/* Studio info in upper right corner */}
-      <div className="absolute top-8 right-8 z-30 text-right text-sm md:text-base font-anonymous-pro text-white">
-        <div className="mb-2">Цифровая креативная студия основанная Сережей Рисом</div>
-        <a href="mailto:contact@example.com" className=" hover:text-gray-300 transition-colors">
-          Нужно что-то сделать? <span className='underline'>Пишите!</span>
+      <div className="absolute top-4 right-4 md:top-8 md:right-8 z-30 text-right text-xs md:text-sm lg:text-base font-anonymous-pro text-white max-w-[200px] md:max-w-none">
+        <div className="mb-1 md:mb-2 leading-tight">Цифровая креативная студия<br className="md:hidden" /> основанная Сережей Рисом</div>
+        <a href="mailto:contact@example.com" className="hover:text-gray-300 transition-colors leading-tight">
+          Нужно что-то сделать?<br className="md:hidden" /> <span className='underline'>Пишите!</span>
         </a>
       </div>
       
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen pointer-events-none">
-        <div className="text-3xl md:text-5xl mb-4 font-anonymous-pro font-bold">мы делаем:</div>
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen pointer-events-none px-4">
+        <div className="text-2xl md:text-4xl lg:text-5xl mb-6 md:mb-8 font-anonymous-pro font-bold text-center">мы делаем:</div>
         
-        <div className="flex items-center">
+        <div className="flex flex-col md:flex-row items-center text-center md:text-left">
           <AnimatePresence mode="wait">
             <motion.div
               key={`word1-${currentIndex}`}
@@ -433,7 +433,7 @@ function WordCyclingPhysics() {
               exit="exit"
               custom={0}
             >
-              <span ref={word1Ref} className={`inline-block text-xl md:text-3xl ${randomFonts.word1}`}>
+              <span ref={word1Ref} className={`inline-block text-lg md:text-2xl lg:text-3xl ${randomFonts.word1} leading-tight`}>
                 {shuffledPairs[currentIndex][0]}
               </span>
             </motion.div>
@@ -448,7 +448,7 @@ function WordCyclingPhysics() {
               exit="exit"
               custom={0.2}
             >
-              <span ref={andRef} className="inline-block px-2 text-lg md:text-2xl">
+              <span ref={andRef} className="inline-block px-2 text-base md:text-xl lg:text-2xl">
                 и
               </span>
             </motion.div>
@@ -463,7 +463,7 @@ function WordCyclingPhysics() {
               exit="exit"
               custom={0.4}
             >
-              <span ref={word2Ref} className={`inline-block text-xl md:text-3xl ${randomFonts.word2}`}>
+              <span ref={word2Ref} className={`inline-block text-lg md:text-2xl lg:text-3xl ${randomFonts.word2} leading-tight`}>
                 {shuffledPairs[currentIndex][1]}
               </span>
             </motion.div>
