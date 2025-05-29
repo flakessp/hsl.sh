@@ -89,7 +89,7 @@ function WordCyclingPhysics() {
 
     const wordDiv = document.createElement('div');
     wordDiv.textContent = text;
-    wordDiv.className = `falling-text absolute text-lg md:text-2xl lg:text-3xl text-white p-1 select-none whitespace-nowrap will-change-transform ${fontClass}`;
+    wordDiv.className = `falling-text absolute text-xl md:text-3xl text-white p-1 select-none whitespace-nowrap will-change-transform ${fontClass}`;
     sceneRef.current.appendChild(wordDiv);
 
     const wordWidth = wordDiv.offsetWidth;
@@ -433,7 +433,7 @@ function WordCyclingPhysics() {
               exit="exit"
               custom={0}
             >
-              <span ref={word1Ref} className={`inline-block text-lg md:text-2xl lg:text-3xl ${randomFonts.word1} leading-tight`}>
+              <span ref={word1Ref} className={`inline-block text-xl md:text-3xl ${randomFonts.word1}`}>
                 {shuffledPairs[currentIndex][0]}
               </span>
             </motion.div>
@@ -448,7 +448,7 @@ function WordCyclingPhysics() {
               exit="exit"
               custom={0.2}
             >
-              <span ref={andRef} className="inline-block px-2 text-base md:text-xl lg:text-2xl">
+              <span ref={andRef} className="inline-block px-2 text-lg md:text-2xl">
                 и
               </span>
             </motion.div>
@@ -463,7 +463,7 @@ function WordCyclingPhysics() {
               exit="exit"
               custom={0.4}
             >
-              <span ref={word2Ref} className={`inline-block text-lg md:text-2xl lg:text-3xl ${randomFonts.word2} leading-tight`}>
+              <span ref={word2Ref} className={`inline-block text-xl md:text-3xl ${randomFonts.word2}`}>
                 {shuffledPairs[currentIndex][1]}
               </span>
             </motion.div>
