@@ -6,12 +6,10 @@ import Matter from 'matter-js';
 import dynamic from 'next/dynamic';
 
 const wordPairs = [
-  ["Сайты", "Продукты"],
-  ["Телеграм боты", "Приложения"],
+  ["Искусственный интеллект", "Телеграм боты"],
+  ["Сайты", "Приложения"],
   ["Искусство", "Инсталляции"],
   ["Образовательные программы", "Воркшопы"],
-  ["Концепции", "Прототипы"],
-  ["Дизайн", "Код"]
 ];
 
 const fontClasses = [
@@ -40,6 +38,8 @@ interface FallingWord {
 
 function WordCyclingPhysics() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasCompletedCycle, setHasCompletedCycle] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Matter.Engine | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
@@ -214,7 +214,7 @@ function WordCyclingPhysics() {
 
     window.addEventListener('resize', handleResize);
 
-    const intervalId = setInterval(() => {
+    const cycleWords = () => {
       // Capture data of words currently on screen before they change
       const wordsToFall: { text: string; rect: DOMRect; fontClass: string }[] = [];
       
@@ -244,11 +244,32 @@ function WordCyclingPhysics() {
       });
       
       // Now update the index to show new words
-      setCurrentIndex((prev) => (prev + 1) % wordPairs.length);
-    }, 3000);
+      setCurrentIndex((prev) => {
+        const nextIndex = (prev + 1) % wordPairs.length;
+        // Check if we've completed a full cycle
+        if (nextIndex === 0 && prev === wordPairs.length - 1) {
+          setHasCompletedCycle(true);
+        }
+        return nextIndex;
+      });
+    };
+
+    // Start the cycling
+    const startCycling = () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      // Use 3 seconds for first cycle, 15 seconds after completing all words
+      const intervalDuration = hasCompletedCycle ? 15000 : 3000;
+      intervalRef.current = setInterval(cycleWords, intervalDuration);
+    };
+
+    startCycling();
 
     return () => {
-      clearInterval(intervalId);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
       window.removeEventListener('resize', handleResize);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -265,6 +286,65 @@ function WordCyclingPhysics() {
       fallingWordsRef.current = [];
     };
   }, []);
+
+  // Restart cycling with new interval when cycle completes
+  useEffect(() => {
+    if (!engineRef.current || !sceneRef.current) return;
+    
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    
+    const cycleWords = () => {
+      // Capture data of words currently on screen before they change
+      const wordsToFall: { text: string; rect: DOMRect; fontClass: string }[] = [];
+      
+      if (word1Ref.current && currentWordsRef.current[0]) {
+        wordsToFall.push({
+          text: currentWordsRef.current[0].text,
+          rect: word1Ref.current.getBoundingClientRect(),
+          fontClass: currentWordsRef.current[0].fontClass
+        });
+      }
+      
+      if (word2Ref.current && currentWordsRef.current[1]) {
+        wordsToFall.push({
+          text: currentWordsRef.current[1].text,
+          rect: word2Ref.current.getBoundingClientRect(),
+          fontClass: currentWordsRef.current[1].fontClass
+        });
+      }
+      
+      // Make current words fall immediately
+      wordsToFall.forEach(wordData => {
+        // Create a temporary element to hold the position data
+        const tempElement = {
+          getBoundingClientRect: () => wordData.rect
+        } as HTMLElement;
+        dropWord(wordData.text, tempElement, wordData.fontClass);
+      });
+      
+      // Now update the index to show new words
+      setCurrentIndex((prev) => {
+        const nextIndex = (prev + 1) % wordPairs.length;
+        // Check if we've completed a full cycle
+        if (nextIndex === 0 && prev === wordPairs.length - 1) {
+          setHasCompletedCycle(true);
+        }
+        return nextIndex;
+      });
+    };
+    
+    // Use 3 seconds for first cycle, 15 seconds after completing all words
+    const intervalDuration = hasCompletedCycle ? 15000 : 3000;
+    intervalRef.current = setInterval(cycleWords, intervalDuration);
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [hasCompletedCycle, dropWord]);
 
   useEffect(() => {
     if (sceneRef.current) {
@@ -325,8 +405,16 @@ function WordCyclingPhysics() {
         хсл щ
       </div>
       
+      {/* Studio info in upper right corner */}
+      <div className="absolute top-8 right-8 z-30 text-right text-sm md:text-base font-anonymous-pro text-white">
+        <div className="mb-2">Цифровая креативная студия основанная Сережей Рисом</div>
+        <a href="mailto:contact@example.com" className=" hover:text-gray-300 transition-colors">
+          Нужно что-то сделать? <span className='underline'>Пишите!</span>
+        </a>
+      </div>
+      
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen pointer-events-none">
-        <div className="text-3xl md:text-5xl mb-4 font-anonymous-pro">Мы делаем:</div>
+        <div className="text-3xl md:text-5xl mb-4 font-anonymous-pro font-bold">Мы делаем:</div>
         
         <div className="flex items-center">
           <AnimatePresence mode="wait">
