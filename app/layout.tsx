@@ -81,8 +81,47 @@ const anonymousPro = Anonymous_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "хсл щ",
-  description: "Landing page with physics and animations",
+  title: "хсл щ — Цифровая креативная студия",
+  description: "Цифровая креативная студия основанная Сережей Рисом. Создаем искусственный интеллект, телеграм боты, сайты, приложения, искусство, инсталляции, образовательные программы и воркшопы.",
+  keywords: "креативная студия, цифровое агентство, искусственный интеллект, телеграм боты, веб-разработка, приложения, digital art, инсталляции, образовательные программы, воркшопы",
+  authors: [{ name: "Сережа Рис" }],
+  creator: "Сережа Рис",
+  publisher: "хсл щ",
+  openGraph: {
+    title: "хсл щ — Цифровая креативная студия",
+    description: "Создаем искусственный интеллект, телеграм боты, сайты, приложения, искусство и инсталляции",
+    url: "https://khsl-shch.com",
+    siteName: "хсл щ",
+    locale: "ru_RU",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "хсл щ — Цифровая креативная студия",
+    description: "Создаем искусственный интеллект, телеграм боты, сайты, приложения, искусство и инсталляции",
+    creator: "@serezharis",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  icons: {
+    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌍</text></svg>',
+    shortcut: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌍</text></svg>',
+    apple: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌍</text></svg>',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({
@@ -91,7 +130,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ru">
+      <head>
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CT31D64PS0"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-CT31D64PS0');
+            `,
+          }}
+        />
+      </head>
       <body className={`${cormorantGaramond.variable} ${playfairDisplay.variable} ${robotoSlab.variable} ${merriweather.variable} ${lora.variable} ${crimsonText.variable} ${sourceSerif4.variable} ${ptSerif.variable} ${libreBaskerville.variable} ${ebGaramond.variable} ${anonymousPro.variable}`}>
         {children}
       </body>
