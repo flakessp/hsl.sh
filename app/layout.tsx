@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { 
   Cormorant_Garamond,
   Playfair_Display,
@@ -131,21 +132,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <head>
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CT31D64PS0"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-CT31D64PS0');
-            `,
-          }}
-        />
-      </head>
       <body className={`${cormorantGaramond.variable} ${playfairDisplay.variable} ${robotoSlab.variable} ${merriweather.variable} ${lora.variable} ${crimsonText.variable} ${sourceSerif4.variable} ${ptSerif.variable} ${libreBaskerville.variable} ${ebGaramond.variable} ${anonymousPro.variable}`}>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CT31D64PS0"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CT31D64PS0');
+          `}
+        </Script>
         {children}
       </body>
     </html>
