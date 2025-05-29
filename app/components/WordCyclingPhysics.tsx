@@ -5,12 +5,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Matter from 'matter-js';
 import dynamic from 'next/dynamic';
 
-const wordPairs = [
-  ["Искусственный интеллект", "Телеграм боты"],
+// First pair is always shown first
+const firstPair = ["Искусственный интеллект", "Телеграм боты"];
+
+// Other pairs that will be shuffled
+const otherPairs = [
   ["Сайты", "Приложения"],
   ["Искусство", "Инсталляции"],
   ["Образовательные программы", "Воркшопы"],
+  ["Блокчейн", "NFT-коллекции"],
 ];
+
+// Shuffle function using Fisher-Yates algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+// Create shuffled word pairs with first pair always first
+const wordPairs = [firstPair, ...shuffleArray(otherPairs)];
 
 const fontClasses = [
   'font-playfair',
@@ -37,6 +54,8 @@ interface FallingWord {
 }
 
 function WordCyclingPhysics() {
+  // Create shuffled pairs once on component mount
+  const [shuffledPairs] = useState(() => [firstPair, ...shuffleArray(otherPairs)]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hasCompletedCycle, setHasCompletedCycle] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -95,15 +114,6 @@ function WordCyclingPhysics() {
 
     const fallingWord: FallingWord = { domElement: wordDiv, physicsBody };
     fallingWordsRef.current.push(fallingWord);
-
-    setTimeout(() => {
-      const index = fallingWordsRef.current.indexOf(fallingWord);
-      if (index > -1) {
-        fallingWordsRef.current.splice(index, 1);
-        Matter.Composite.remove(engineRef.current!.world, physicsBody);
-        wordDiv.remove();
-      }
-    }, 30000);
   };
 
   const syncDOMWithPhysics = () => {
@@ -245,9 +255,9 @@ function WordCyclingPhysics() {
       
       // Now update the index to show new words
       setCurrentIndex((prev) => {
-        const nextIndex = (prev + 1) % wordPairs.length;
+        const nextIndex = (prev + 1) % shuffledPairs.length;
         // Check if we've completed a full cycle
-        if (nextIndex === 0 && prev === wordPairs.length - 1) {
+        if (nextIndex === 0 && prev === shuffledPairs.length - 1) {
           setHasCompletedCycle(true);
         }
         return nextIndex;
@@ -326,9 +336,9 @@ function WordCyclingPhysics() {
       
       // Now update the index to show new words
       setCurrentIndex((prev) => {
-        const nextIndex = (prev + 1) % wordPairs.length;
+        const nextIndex = (prev + 1) % shuffledPairs.length;
         // Check if we've completed a full cycle
-        if (nextIndex === 0 && prev === wordPairs.length - 1) {
+        if (nextIndex === 0 && prev === shuffledPairs.length - 1) {
           setHasCompletedCycle(true);
         }
         return nextIndex;
@@ -363,8 +373,8 @@ function WordCyclingPhysics() {
   // Update current words reference when index or fonts change
   useEffect(() => {
     currentWordsRef.current = [
-      { text: wordPairs[currentIndex][0], fontClass: randomFonts.word1 },
-      { text: wordPairs[currentIndex][1], fontClass: randomFonts.word2 }
+      { text: shuffledPairs[currentIndex][0], fontClass: randomFonts.word1 },
+      { text: shuffledPairs[currentIndex][1], fontClass: randomFonts.word2 }
     ];
   }, [currentIndex, randomFonts]);
 
@@ -414,7 +424,7 @@ function WordCyclingPhysics() {
       </div>
       
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen pointer-events-none">
-        <div className="text-3xl md:text-5xl mb-4 font-anonymous-pro font-bold">Мы делаем:</div>
+        <div className="text-3xl md:text-5xl mb-4 font-anonymous-pro font-bold">мы делаем:</div>
         
         <div className="flex items-center">
           <AnimatePresence mode="wait">
@@ -427,7 +437,7 @@ function WordCyclingPhysics() {
               custom={0}
             >
               <span ref={word1Ref} className={`inline-block text-xl md:text-3xl ${randomFonts.word1}`}>
-                {wordPairs[currentIndex][0]}
+                {shuffledPairs[currentIndex][0]}
               </span>
             </motion.div>
           </AnimatePresence>
@@ -441,7 +451,7 @@ function WordCyclingPhysics() {
               exit="exit"
               custom={0.2}
             >
-              <span ref={andRef} className="inline-block px-2 text-xl md:text-3xl">
+              <span ref={andRef} className="inline-block px-2 text-lg md:text-2xl">
                 и
               </span>
             </motion.div>
@@ -457,7 +467,7 @@ function WordCyclingPhysics() {
               custom={0.4}
             >
               <span ref={word2Ref} className={`inline-block text-xl md:text-3xl ${randomFonts.word2}`}>
-                {wordPairs[currentIndex][1]}
+                {shuffledPairs[currentIndex][1]}
               </span>
             </motion.div>
           </AnimatePresence>
