@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Matter from 'matter-js';
 import dynamic from 'next/dynamic';
@@ -26,8 +26,6 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-// Create shuffled word pairs with first pair always first
-const wordPairs = [firstPair, ...shuffleArray(otherPairs)];
 
 const fontClasses = [
   'font-playfair',
@@ -82,7 +80,7 @@ function WordCyclingPhysics() {
   const andRef = useRef<HTMLSpanElement>(null);
   const word2Ref = useRef<HTMLSpanElement>(null);
 
-  const dropWord = (text: string, originalElement: HTMLElement | null, fontClass: string) => {
+  const dropWord = useCallback((text: string, originalElement: HTMLElement | null, fontClass: string) => {
     if (!sceneRef.current || !engineRef.current || !originalElement) return;
 
     const rect = originalElement.getBoundingClientRect();
@@ -114,18 +112,18 @@ function WordCyclingPhysics() {
 
     const fallingWord: FallingWord = { domElement: wordDiv, physicsBody };
     fallingWordsRef.current.push(fallingWord);
-  };
+  }, []);
 
-  const syncDOMWithPhysics = () => {
+  const syncDOMWithPhysics = useCallback(() => {
     fallingWordsRef.current.forEach(({ domElement, physicsBody }) => {
       const { x, y } = physicsBody.position;
       const angle = physicsBody.angle;
       domElement.style.transform = `translate(${x - domElement.offsetWidth / 2}px, ${y - domElement.offsetHeight / 2}px) rotate(${angle}rad)`;
     });
     animationFrameRef.current = requestAnimationFrame(syncDOMWithPhysics);
-  };
+  }, []);
 
-  const handleInteractionStart = (e: MouseEvent | TouchEvent) => {
+  const handleInteractionStart = useCallback((e: MouseEvent | TouchEvent) => {
     if (!engineRef.current || !sceneRef.current) return;
 
     e.preventDefault();
@@ -185,7 +183,7 @@ function WordCyclingPhysics() {
       document.addEventListener('touchmove', handleMove);
       document.addEventListener('touchend', handleEnd);
     }
-  };
+  }, []);
 
 
   useEffect(() => {
@@ -295,7 +293,7 @@ function WordCyclingPhysics() {
       });
       fallingWordsRef.current = [];
     };
-  }, []);
+  }, [hasCompletedCycle, shuffledPairs.length, dropWord, syncDOMWithPhysics]);
 
   // Restart cycling with new interval when cycle completes
   useEffect(() => {
@@ -354,21 +352,20 @@ function WordCyclingPhysics() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [hasCompletedCycle, dropWord]);
+  }, [hasCompletedCycle, shuffledPairs.length, dropWord]);
 
   useEffect(() => {
-    if (sceneRef.current) {
-      sceneRef.current.addEventListener('mousedown', handleInteractionStart);
-      sceneRef.current.addEventListener('touchstart', handleInteractionStart);
+    const currentScene = sceneRef.current;
+    if (currentScene) {
+      currentScene.addEventListener('mousedown', handleInteractionStart);
+      currentScene.addEventListener('touchstart', handleInteractionStart);
 
       return () => {
-        if (sceneRef.current) {
-          sceneRef.current.removeEventListener('mousedown', handleInteractionStart);
-          sceneRef.current.removeEventListener('touchstart', handleInteractionStart);
-        }
+        currentScene.removeEventListener('mousedown', handleInteractionStart);
+        currentScene.removeEventListener('touchstart', handleInteractionStart);
       };
     }
-  }, []);
+  }, [handleInteractionStart]);
 
   // Update current words reference when index or fonts change
   useEffect(() => {
@@ -376,7 +373,7 @@ function WordCyclingPhysics() {
       { text: shuffledPairs[currentIndex][0], fontClass: randomFonts.word1 },
       { text: shuffledPairs[currentIndex][1], fontClass: randomFonts.word2 }
     ];
-  }, [currentIndex, randomFonts]);
+  }, [currentIndex, randomFonts, shuffledPairs]);
 
   const wordAnimationVariants = {
     initial: { opacity: 0, scale: 0.9 },
